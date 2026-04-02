@@ -106,46 +106,49 @@ const InfoCard = ({ icon, label, value, accent }) => (
   </div>
 );
 
-const ServiceCartItem = ({ item, canManage, onRemove }) => (
-  <div
-    style={{
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "space-between",
-      padding: "12px 16px",
-      borderBottom: "1px solid #f5f5f5",
-      transition: "background 0.15s",
-    }}
-    onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#fafafa")}
-    onMouseLeave={(e) =>
-      (e.currentTarget.style.backgroundColor = "transparent")
-    }
-  >
-    <div style={{ flex: 1 }}>
-      <div style={{ fontWeight: 600, color: "#042954", fontSize: 14 }}>
-        {item.serviceName || item.name}
+const ServiceCartItem = ({ item, canManage, onRemove }) => {
+  const qty = item.qty || item.quantity || 1; // ← handle both field names
+  const total = item.rate ? item.rate * qty : null;
+
+  return (
+    <div
+      style={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+        padding: "12px 16px",
+        borderBottom: "1px solid #f5f5f5",
+        transition: "background 0.15s",
+      }}
+      onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#fafafa")}
+      onMouseLeave={(e) =>
+        (e.currentTarget.style.backgroundColor = "transparent")
+      }
+    >
+      <div style={{ flex: 1 }}>
+        <div style={{ fontWeight: 600, color: "#042954", fontSize: 14 }}>
+          {item.serviceName || item.name}
+        </div>
+        <div style={{ fontSize: 12, color: "#888", marginTop: 2 }}>
+          Qty: <strong style={{ color: "#fabf22" }}>{qty}</strong>
+          {total && <> &nbsp;·&nbsp; ₹{total.toLocaleString("en-IN")}</>}
+        </div>
       </div>
-      <div style={{ fontSize: 12, color: "#888", marginTop: 2 }}>
-        Qty: <strong style={{ color: "#fabf22" }}>{item.quantity}</strong>
-        {item.rate && (
-          <> &nbsp;·&nbsp; ₹{(item.rate * item.quantity).toLocaleString()}</>
-        )}
-      </div>
+      {canManage && (
+        <Tooltip title="Remove service">
+          <Button
+            type="text"
+            size="small"
+            danger
+            icon={<DeleteOutlined />}
+            onClick={() => onRemove(item)}
+            style={{ borderRadius: 6 }}
+          />
+        </Tooltip>
+      )}
     </div>
-    {canManage && (
-      <Tooltip title="Remove service">
-        <Button
-          type="text"
-          size="small"
-          danger
-          icon={<DeleteOutlined />}
-          onClick={() => onRemove(item)}
-          style={{ borderRadius: 6 }}
-        />
-      </Tooltip>
-    )}
-  </div>
-);
+  );
+};
 
 // ─── Bill Modal ───────────────────────────────────────────────────────────────
 
@@ -526,11 +529,7 @@ const AdmissionDetailPage = () => {
       .then((res) => {
         console.log("Services API response:", res?.data);
 
-        const list =
-          res?.data?.data || 
-          res?.data?.services || 
-          res?.data || 
-          [];
+        const list = res?.data?.data || res?.data?.services || res?.data || [];
 
         setServices(Array.isArray(list) ? list : []);
       })
@@ -552,7 +551,9 @@ const AdmissionDetailPage = () => {
     if (canManageServices) fetchServices();
   }, [id]);
 
-  useEffect(() => { fetchServices() }, [drawerOpen]);
+  useEffect(() => {
+    fetchServices();
+  }, [drawerOpen]);
 
   useEffect(() => {
     if (admission?.services) setCartServices(admission.services);
