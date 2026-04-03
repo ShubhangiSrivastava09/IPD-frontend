@@ -1,3 +1,4 @@
+src/Helpers/index.jsx
 import { deleteCookie } from '../Hooks/cookie'
 import axios from 'axios'
 import Cookies from 'js-cookie'
@@ -10,11 +11,11 @@ export const request = async (props) => {
   const token = Cookies.get('IPD')
   try {
     const response = await axios?.[props?.method](
-      `${import.meta.env.VITE_API_BASE_URL}${props?.url}`,
+     `${import.meta.env.VITE_API_BASE_URL}${props?.url}`,
       props?.cred,
       {
         headers: {
-          Authorization: `${token}`,
+          Authorization: `Bearer ${token}`,
         },
         withCredentials: true,
       },
@@ -24,7 +25,6 @@ export const request = async (props) => {
   } catch (error) {
     if (error.response.status === 401) {
       deleteCookie('IPD')
-      // window != undefined && (window.location.href = `${import.meta.env.VITE_SIGNUP_URL}`);
       console.error('Unauthorized: Redirecting to login page')
     }
     throw error
@@ -70,8 +70,7 @@ export const postRequest = async (props) => {
   } catch (error) {
     if (error.response.status === 401) {
       deleteCookie('IPD')
-      window != undefined && (window.location.href = `${import.meta.env.VITE_SIGNUP_URL}`)
-      console.error('Unauthorized: Redirecting to login page')
+      console.error('Unauthorized')
     }
     throw error
   }
@@ -94,11 +93,9 @@ export const putRequest = async (props) => {
   } catch (error) {
     if (error.response.status === 401) {
       deleteCookie('IPD')
-      window != undefined && (window.location.href = `${import.meta.env.VITE_SIGNUP_URL}`)
-      console.error('Unauthorized: Redirecting to login page')
+      console.error('Unauthorized')
     }
-    // Handle other errors here
-    throw error // Re-throw the error to allow the caller to handle it
+    throw error
   }
 }
 
@@ -119,11 +116,9 @@ export const patchRequest = async (props) => {
   } catch (error) {
     if (error.response.status === 401) {
       deleteCookie('IPD')
-      window != undefined && (window.location.href = `${import.meta.env.VITE_SIGNUP_URL}`)
-      console.error('Unauthorized: Redirecting to login page')
+      console.error('Unauthorized')
     }
-    // Handle other errors here
-    throw error // Re-throw the error to allow the caller to handle it
+    throw error
   }
 }
 export const deleteRequest = async (url) => {
@@ -139,11 +134,9 @@ export const deleteRequest = async (url) => {
   } catch (error) {
     if (error.response.status === 401) {
       deleteCookie('IPD')
-      window != undefined && (window.location.href = `${import.meta.env.VITE_SIGNUP_URL}`)
-      console.error('Unauthorized: Redirecting to login page')
+      console.error('Unauthorized')
     }
-    // Handle other errors here
-    throw error // Re-throw the error to allow the caller to handle it
+    throw error
   }
 }
 
@@ -154,7 +147,7 @@ export const deleteRequest1 = async (url) => {
     if (confirmed) {
       const response = await axios.delete(`${import.meta.env.VITE_API_BASE_URL}${url}`, {
         headers: {
-          Authorization: `${token}`,
+          Authorization: `Bearer ${token}`,
         },
       })
 
@@ -169,7 +162,6 @@ export const deleteRequest1 = async (url) => {
         console.error('Unauthorized: Redirecting to login page')
       }
     }
-    // Handle other errors here
     throw error // Re-throw the error to allow the caller to handle it
   }
 }
@@ -180,7 +172,7 @@ export const deleteRequestwithbody = async (props) => {
   try {
     const response = await axios.delete(`${import.meta.env.VITE_API_BASE_URL}${props.url}`, {
       headers: {
-        Authorization: `${token}`,
+        Authorization: `Bearer ${token}`,
       },
       data: props.cred, // body for delete request
     })
@@ -189,10 +181,7 @@ export const deleteRequestwithbody = async (props) => {
   } catch (error) {
     if (error?.response?.status === 401) {
       deleteCookie('IPD')
-      if (typeof window !== 'undefined') {
-        window.location.href = `${import.meta.env.VITE_SIGNUP_URL}`
-      }
-      console.error('Unauthorized: Redirecting to login page')
+      console.error('Unauthorized')
     }
 
     throw error
@@ -254,10 +243,10 @@ export const fileUpload = async (props) => {
       props?.cred,
       {
         headers: {
-          Authorization: `${token}`,
+          Authorization: `Bearer ${token}`,
           'Content-Type': 'multipart/form-data',
         },
-        // withCredentials: true,
+        withCredentials: true,
       },
     )
 
@@ -265,11 +254,9 @@ export const fileUpload = async (props) => {
   } catch (error) {
     if (error.response.status === 401) {
       deleteCookie('IPD')
-      window != undefined && (window.location.href = `${import.meta.env.VITE_SIGNUP_URL}`)
-      console.error('Unauthorized: Redirecting to login page')
+      console.error('Unauthorized')
     }
-    // Handle other errors here
-    throw error // Re-throw the error to allow the caller to handle it
+    throw error
   }
 }
 
@@ -281,7 +268,7 @@ export const noTokenfileUpload = async (props) => {
       {
         responseType: 'arraybuffer',
         headers: {
-          Authorization: `${token}`,
+          Authorization: `Bearer ${token}`,
           'Content-Type': 'multipart/form-data',
         },
         withCredentials: true,
@@ -298,19 +285,17 @@ export const noTokenfileUpload = async (props) => {
   }
 }
 
-// Function to display a confirmation dialog
 const confirmDeletion = async (message) => {
   return new Promise((resolve) => {
     const accept = () => resolve(true)
     const reject = () => resolve(false)
 
-    // Assuming `confirmDialog` is a function that displays a confirmation dialog
     confirmDialog({
       message: message,
       header: 'Confirm Deletion',
       icon: 'warning',
-      acceptClassName: 'p-button-danger', // Example class for styling
-      acceptText: 'Delete', // Example text for the confirm button
+      acceptClassName: 'p-button-danger', 
+      acceptText: 'Delete',
       accept: accept,
       reject: reject,
     })
