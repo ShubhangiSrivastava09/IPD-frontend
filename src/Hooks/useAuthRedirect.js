@@ -1,4 +1,3 @@
-
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
@@ -12,7 +11,7 @@ const useAuthRedirect = () => {
     if (!token) {
       navigate("/login");
     }
-  }, []);
+  }, [navigate]);
 };
 
 export default useAuthRedirect;

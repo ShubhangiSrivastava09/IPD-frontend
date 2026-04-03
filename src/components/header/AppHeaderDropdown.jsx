@@ -28,7 +28,6 @@ const AppHeaderDropdown = () => {
     deleteCookie("IPD");
     localStorage.removeItem("IPD");
     navigate("/login");
-    window.location.reload();
   };
 
   const handleProfileNavigate = () => {
@@ -159,27 +158,69 @@ const AppHeaderDropdown = () => {
           </div>
 
           {/* Menu items */}
-      {showProfile && (
-  <button
-    onClick={handleProfileNavigate}
-    style={menuItemStyle}
-    onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#f5f5f5')}
-    onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'transparent')}
-  >
-    <CIcon icon={cilUser} style={{ width: '16px', height: '16px', marginRight: '10px', color: '#042954', flexShrink: 0 }} />
-    <span style={{ fontSize: '14px', color: '#042954', whiteSpace: 'nowrap' }}>Profile</span>
-  </button>
-)}
+          {showProfile && (
+            <button
+              onClick={handleProfileNavigate}
+              style={menuItemStyle}
+              onMouseEnter={(e) =>
+                (e.currentTarget.style.backgroundColor = "#f5f5f5")
+              }
+              onMouseLeave={(e) =>
+                (e.currentTarget.style.backgroundColor = "transparent")
+              }
+            >
+              <CIcon
+                icon={cilUser}
+                style={{
+                  width: "16px",
+                  height: "16px",
+                  marginRight: "10px",
+                  color: "#042954",
+                  flexShrink: 0,
+                }}
+              />
+              <span
+                style={{
+                  fontSize: "14px",
+                  color: "#042954",
+                  whiteSpace: "nowrap",
+                }}
+              >
+                Profile
+              </span>
+            </button>
+          )}
 
-<button
-  onClick={logOut}
-  style={{ ...menuItemStyle, borderTop: '1px solid #f0f0f0' }}
-  onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#fff5f5')}
-  onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'transparent')}
->
-  <CIcon icon={cilLockLocked} style={{ width: '16px', height: '16px', marginRight: '10px', color: '#dc3545', flexShrink: 0 }} />
-  <span style={{ fontSize: '14px', color: '#dc3545', whiteSpace: 'nowrap' }}>Log Out</span>
-</button>
+          <button
+            onClick={logOut}
+            style={{ ...menuItemStyle, borderTop: "1px solid #f0f0f0" }}
+            onMouseEnter={(e) =>
+              (e.currentTarget.style.backgroundColor = "#fff5f5")
+            }
+            onMouseLeave={(e) =>
+              (e.currentTarget.style.backgroundColor = "transparent")
+            }
+          >
+            <CIcon
+              icon={cilLockLocked}
+              style={{
+                width: "16px",
+                height: "16px",
+                marginRight: "10px",
+                color: "#dc3545",
+                flexShrink: 0,
+              }}
+            />
+            <span
+              style={{
+                fontSize: "14px",
+                color: "#dc3545",
+                whiteSpace: "nowrap",
+              }}
+            >
+              Log Out
+            </span>
+          </button>
         </div>
       )}
     </div>
