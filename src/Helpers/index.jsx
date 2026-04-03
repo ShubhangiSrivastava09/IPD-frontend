@@ -1,4 +1,4 @@
-src/Helpers/index.jsx
+
 import { deleteCookie } from '../Hooks/cookie'
 import axios from 'axios'
 import Cookies from 'js-cookie'

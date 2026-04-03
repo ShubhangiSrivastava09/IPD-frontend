@@ -1,4 +1,4 @@
-src / layout / DefaultLayout.jsx;
+
 import React, { useEffect, useState, useContext } from "react";
 import Cookies from "js-cookie";
 

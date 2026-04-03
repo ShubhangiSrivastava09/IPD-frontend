@@ -1,4 +1,4 @@
-src / Hooks / cookie.jsx;
+
 import { useCallback } from "react";
 import Cookies from "js-cookie";
 
